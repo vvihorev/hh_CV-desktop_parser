@@ -8,6 +8,19 @@ months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май'
 lbl2_text = []
 
 
+class SearchCV:
+    def __init__(self, text=""):
+        self.text = text
+
+    def from_middle(self, middle=" ", left="\n", *right):
+        mid = text.find(middle)
+        for x in right:
+            if text.find(x) != -1:
+                end = text.find(x)
+        start = len(text) - 1 - (text[::-1].find(left, len(text) - mid))
+        return text[start:end].strip()
+
+
 def exit(self):
     window.destroy()
 
