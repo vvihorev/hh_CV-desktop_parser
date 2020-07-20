@@ -1,4 +1,4 @@
 # hh_resume_pull
-A python script that parses a hh.ru resume and saves it to a .csv file. GUI using tkinter.
+A python script that parses a hh.ru CV and saves it to a .csv file. Script has a GUI based on tkinter.
 
-Script takes data frm the clipboard and creates a database.csv in roject directory.
+Script takes data from the clipboard and creates a database.csv in project directory.
