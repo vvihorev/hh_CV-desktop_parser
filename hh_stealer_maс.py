@@ -140,13 +140,16 @@ def parse_resume(text, date, link):
     if start == 11:
         comment = None
     else:
-        end = text.find('История', start) - 1
+        if text.find('История') != -1:
+            end = text.find('История', start) - 1
+        elif text.find('ИзменитьУдалить') != -1:
+            end = text.find('ИзменитьУдалить', start) + 1
         comment = text[start:end].strip()
         if comment == 'Добавить комментарий':
             comment = None
         else:
             comment = comment.splitlines()
-            comment = "\n".join(comment[1:len(comment) - 22])
+            comment = "\n".join(comment[1:len(comment) - 2])
 
     # find birth
     start = text.find('родил') + 5
@@ -201,8 +204,9 @@ def parse_resume(text, date, link):
             experience.append('\n')
         else:
             experience.append(x)
-        
     experience = "\n".join(experience).replace('\n\n', '\n')
+    if text.find('по настоящее время') != -1:
+        experience = 'По настоящее время\n' + experience
 
     # finding job_name
     middle = text.find('Резюме обновлено')
