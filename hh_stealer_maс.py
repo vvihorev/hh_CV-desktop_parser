@@ -18,6 +18,24 @@ window.geometry('350x160')
 window.bind("<Escape>", exit)
 
 
+def delete_db():
+    def delete():
+        with open('database.csv', 'w') as file:
+            file.close()
+
+    delete_window = Toplevel(window)
+    delete_window.geometry("300x100")
+    delete_text = Label(delete_window, text='Вы уверены, что хотите удалить файл?')
+    delete_text.grid(column=0, row=0)
+
+    yes = Button(delete_window, text='Да', command=delete)
+    yes.grid(column=0, row=1)
+    yes.bind("<Return>", delete)
+
+    no = Button(delete_window, text='Нет', command=delete_window.destroy)
+    no.grid(column=1, row=1)
+
+
 def how_to():
     instructions = """
     Как пользоваться программой:
@@ -56,7 +74,6 @@ def save(event=None, info=lbl2_text):
         text = window.clipboard_get()
     except:
         text = ""
-    print(text.splitlines()[2])
     if len(text.splitlines()) < 3 or text.splitlines()[2] != 'Резюме':
         result = 'Ошибка копирования'
     else:
@@ -66,14 +83,6 @@ def save(event=None, info=lbl2_text):
         with open('database.csv', 'a+', newline='') as file:
             resume_writer = csv.writer(
                 file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            file.seek(0)
-            if file.read() in [None, ""]:
-                resume_writer.writerow(["ФИО", "Дата общения", "Ссылка",
-                                        "Вакансия", "Дата рождения",
-                                        "Почта", "Телефон", "Комментарии",
-                                        "Командировки", "Права",
-                                        "Образование", "Опыт работы",
-                                        "Желаемая ЗП"])
             resume_writer.writerow(text)
             file.close()
         result = text[0].split()[0] + ': Успешно сохранено'
@@ -137,6 +146,9 @@ def parse_resume(text, date, link):
         comment = text[start:end].strip()
         if comment == 'Добавить комментарий':
             comment = None
+        else:
+            comment = comment.splitlines()
+            comment = "\n".join(comment[1:len(comment) - 22])
 
     # find birth
     start = text.find('родил') + 5
@@ -257,5 +269,8 @@ btn.bind("<Return>", save)
 
 btn2 = Button(text='Помощь', command=how_to)
 btn2.grid(column=0, row=4)
+
+btn3 = Button(text='Удалить базу', command=delete_db)
+btn3.grid(column=0, row=5)
 
 window.mainloop()
