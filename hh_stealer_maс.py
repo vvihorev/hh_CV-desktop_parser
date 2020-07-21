@@ -55,9 +55,8 @@ def how_to():
         Результаты сохранения показываются в нижней части окна
     """
     help_window = Toplevel(window)
-    help_window.geometry("600x300")
     help_text = Label(help_window, text=instructions, justify='left')
-    help_text.pack()
+    help_text.pack(padx=30, pady=30)
 
 
 def clean_text(text):
@@ -240,7 +239,7 @@ try:
 except:
     text = ""
 if len(text.splitlines()) < 3 or text.splitlines()[2] != 'Резюме':
-    lbl.configure(text='Скопируйте резюме')
+    lbl.configure(text='Скопируйте резюме', font='Helvetica 12 bold')
 else:
     lbl.configure(text='Нажмите Enter')
 
