@@ -24,6 +24,7 @@ def delete_db():
         delete_window.destroy()
 
     delete_window = Toplevel(window)
+    delete_window.focus_set()
     delete_text = Label(delete_window, text='Вы уверены, что хотите удалить файл?')
     delete_text.grid(column=0, row=0, columnspan=2, padx=30, pady=5)
 
@@ -80,7 +81,7 @@ def save(event=None, info=lbl2_text):
 
         with open('database.csv', 'a+', newline='') as file:
             resume_writer = csv.writer(
-                file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
             resume_writer.writerow(text)
             file.close()
         result = text[0].split()[0] + ': Успешно сохранено'
@@ -134,6 +135,8 @@ def parse_resume(text, date, link):
         else:
             end = middle
         phone = '+7' + text[start:end].strip()
+        if len(phone) < 8:
+            phone = None
 
     # finding comment
     start = text.find('Комментарии') + 12
@@ -239,8 +242,9 @@ def parse_resume(text, date, link):
     return(text)
 
 
-lbl = Label(text='Скопируйте резюме')
+lbl = Label()
 lbl.grid(column=1, row=0, pady=15)
+
 try:
     text = window.clipboard_get()
 except:
@@ -251,7 +255,7 @@ else:
     lbl.configure(text='Нажмите Enter', font='Helvetica 12 bold')
 
 lbl2 = Label()
-lbl2.grid(column=1, row=4)
+lbl2.grid(column=1, row=4, pady=10)
 
 lbl3 = Label(text='Дата общения:')
 lbl3.grid(column=0, row=1, sticky='E')
