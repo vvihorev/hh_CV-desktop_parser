@@ -14,7 +14,6 @@ def exit(self):
 
 window = Tk()
 window.title("hh stealer")
-window.geometry('350x160')
 window.bind("<Escape>", exit)
 
 
@@ -22,18 +21,18 @@ def delete_db():
     def delete():
         with open('database.csv', 'w') as file:
             file.close()
+        delete_window.destroy()
 
     delete_window = Toplevel(window)
-    delete_window.geometry("300x100")
     delete_text = Label(delete_window, text='Вы уверены, что хотите удалить файл?')
-    delete_text.grid(column=0, row=0)
+    delete_text.grid(column=0, row=0, columnspan=2, padx=30, pady=5)
 
-    yes = Button(delete_window, text='Да', command=delete)
-    yes.grid(column=0, row=1)
+    yes = Button(delete_window, text='Да', width=10, command=delete)
+    yes.grid(column=0, row=1, pady=15)
     yes.bind("<Return>", delete)
 
-    no = Button(delete_window, text='Нет', command=delete_window.destroy)
-    no.grid(column=1, row=1)
+    no = Button(delete_window, text='Нет', width=10, command=delete_window.destroy)
+    no.grid(column=1, row=1, pady=15)
 
 
 def how_to():
@@ -235,7 +234,7 @@ def parse_resume(text, date, link):
 
 
 lbl = Label(text='Скопируйте резюме')
-lbl.grid(column=1, row=0)
+lbl.grid(column=1, row=0, pady=15)
 try:
     text = window.clipboard_get()
 except:
@@ -249,10 +248,10 @@ lbl2 = Label()
 lbl2.grid(column=1, row=4)
 
 lbl3 = Label(text='Дата общения:')
-lbl3.grid(column=0, row=1)
+lbl3.grid(column=0, row=1, sticky='E')
 
 lbl4 = Label(text='Ссылка на резюме:')
-lbl4.grid(column=0, row=2)
+lbl4.grid(column=0, row=2, sticky='E')
 
 ent = Entry()
 ent.grid(column=1, row=1)
@@ -264,13 +263,13 @@ ent2.grid(column=1, row=2)
 ent2.bind("<Return>", save)
 
 btn = Button(text='Сохранить', command=save)
-btn.grid(column=1, row=3)
+btn.grid(column=1, row=3, pady=10, ipadx=30)
 btn.bind("<Return>", save)
 
 btn2 = Button(text='Помощь', command=how_to)
-btn2.grid(column=0, row=4)
+btn2.grid(column=0, row=4, sticky='N', pady=15)
 
 btn3 = Button(text='Удалить базу', command=delete_db)
-btn3.grid(column=0, row=5)
+btn3.grid(column=2, row=4, sticky='N', padx=20, pady=15)
 
 window.mainloop()
