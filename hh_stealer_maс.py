@@ -1,6 +1,5 @@
 from tkinter import *
 import csv
-import codecs
 
 # добавить вопрос если запись повторяеся, онлайн база
 
@@ -57,15 +56,16 @@ def save(event=None, info=lbl2_text):
         text = window.clipboard_get()
     except:
         text = ""
+    print(text.splitlines()[2])
     if len(text.splitlines()) < 3 or text.splitlines()[2] != 'Резюме':
         result = 'Ошибка копирования'
     else:
         text = clean_text(text)
         text = parse_resume(text, ent.get(), ent2.get())
 
-        with codecs.open('database.csv', 'a+', encoding='utf-8') as file:
+        with open('database.csv', 'a+', newline='') as file:
             resume_writer = csv.writer(
-                file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
+                file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             file.seek(0)
             if file.read() in [None, ""]:
                 resume_writer.writerow(["ФИО", "Дата общения", "Ссылка",
@@ -178,7 +178,7 @@ def parse_resume(text, date, link):
         end = text.find('Знание языков')
         if end == -1:
             end = text.find('Гражданство')
-        education = text[start:end].replace('\n', ' ').replace('\r', '').strip()
+        education = text[start:end].strip()
 
     # finding experience
     start = text.find('\nОпыт работы') + 1
@@ -189,7 +189,7 @@ def parse_resume(text, date, link):
     for x in full_experience:
         if not x.split()[0].isnumeric() and not x.split()[0] in months:
             experience.append(x)
-    experience = " ".join(experience).replace('\n', ' ').replace('\r', '').strip()
+    experience = "\n".join(experience)
 
     # finding job_name
     middle = text.find('Резюме обновлено')
