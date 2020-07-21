@@ -28,3 +28,17 @@ function removeDuplicates() {
   sheet.clearContents();
   sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
 }
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+      .createMenu('hh')
+      .addItem('Импортировать новые записи', 'importCSV')
+      .addItem('Удалить повторяющиеся', 'removeDuplicates')
+      .addToUi();
+}
+
+function importCSV() {
+  var html = HtmlService.createHtmlOutputFromFile('Index');
+  SpreadsheetApp.getUi()
+      .showModalDialog(html, 'Выберите файл database.csv:');
+}
