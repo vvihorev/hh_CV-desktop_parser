@@ -194,12 +194,15 @@ def parse_resume(text, date, link):
     start = text.find('\nОпыт работы') + 1
     end = text.find('Ключевые навыки')
     full_experience = text[start:end].strip().replace(
-        '\n\n', '\n').splitlines()[1:]
+        '\n\n', '\n').splitlines()
     experience = []
     for x in full_experience:
-        if not x.split()[0].isnumeric() and not x.split()[0] in months:
+        if x.split()[0] in months:
+            experience.append('\n')
+        else:
             experience.append(x)
-    experience = "\n".join(experience)
+        
+    experience = "\n".join(experience).replace('\n\n', '\n')
 
     # finding job_name
     middle = text.find('Резюме обновлено')
@@ -241,7 +244,7 @@ except:
 if len(text.splitlines()) < 3 or text.splitlines()[2] != 'Резюме':
     lbl.configure(text='Скопируйте резюме', font='Helvetica 12 bold')
 else:
-    lbl.configure(text='Нажмите Enter')
+    lbl.configure(text='Нажмите Enter', font='Helvetica 12 bold')
 
 lbl2 = Label()
 lbl2.grid(column=1, row=4)
